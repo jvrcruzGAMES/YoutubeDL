@@ -15,11 +15,11 @@ jobs:
       - name: Build iOS
         run: |
           xcodebuild build \
-            - workspace "YoutubeDL.xcworkspace" \
-            - scheme "YoutubeDL" \
-            - sdk iphoneos \
-            - destination 'platform=iOS,OS=17.0' \
-            - configuration Release \
+            -workspace "YoutubeDL.xcworkspace" \
+            -scheme "YoutubeDL" \
+            -sdk iphoneos \
+            -destination 'platform=iOS,OS=17.0' \
+            -configuration Release \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO   
