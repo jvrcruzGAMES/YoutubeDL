@@ -45,7 +45,7 @@ jobs:
       - name: Export unsigned .app bundle
         run: |
           mkdir Result
-          cp -R "$TARGET_BUILD_DIR/YoutubeDL.app" "./Result/YoutubeDL.app"
+          cp -R "$TARGET_BUILD_DIR/Y.app" "./Result/YoutubeDL.app"
   
       - name: Archive and upload .app file
         uses: actions/upload-artifact@v4
