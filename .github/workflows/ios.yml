@@ -1,0 +1,20 @@
+name: iOS starter workflow
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build and Test default scheme using any available iPhone simulator
+    runs-on: macos-latest
+
+    steps:
+      - name: Build iOS Action
+        uses: sparkfabrik/ios-build-action@v2.3.2
+        with:
+          configuration: Release
+          export-method: development
+          
