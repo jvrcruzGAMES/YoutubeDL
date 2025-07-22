@@ -1,20 +1,25 @@
-name: iOS starter workflow
+name: Build & Deploy
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - master
 
 jobs:
-  build:
-    name: Build and Test default scheme using any available iPhone simulator
+
+  build-ios:
+    name: Build iOS and Deploy
     runs-on: macos-latest
 
     steps:
-      - name: Build iOS Action
-        uses: sparkfabrik/ios-build-action@v2.3.2
-        with:
-          configuration: Release
-          export-method: development
-          
+      - name: Build iOS
+        run: |
+          xcodebuild build \
+            - workspace "YoutubeDL.xcworkspace" \
+            - scheme "YoutubeDL" \
+            - sdk iphoneos \
+            - destination 'platform=iOS,OS=17.0' \
+            - configuration Release \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO   
