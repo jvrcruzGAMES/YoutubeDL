@@ -30,13 +30,22 @@ jobs:
           if [ $scheme = default ]; then scheme=$(cat default); fi
           if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
           file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
-          xcodebuild build -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO 
+          xcodebuild build -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO -configuration Release 
 
+      - name: Get exact build directory
+        id: get_paths
+        run: |
+          BUILD_SETTINGS=$(xcodebuild -project YoutubeDL.xcodeproj -scheme "YoutubeDL" -configuration Release -sdk iphoneos -showBuildSettings)
+          export BUILD_DIR=$(echo "$BUILD_SETTINGS" | grep -m 1 "BUILD_DIR" | sed -E 's/^[^=]+=(.*)$/\1/' | xargs)
+          export TARGET_BUILD_DIR=$(echo "$BUILD_SETTINGS" | grep -m 1 "TARGET_BUILD_DIR" | sed -E 's/^[^=]+=(.*)$/\1/' | xargs)
+          echo "BUILD_DIR=$BUILD_DIR"
+          echo "TARGET_BUILD_DIR=$TARGET_BUILD_DIR"
+          echo "TARGET_BUILD_DIR=$TARGET_BUILD_DIR" >> $GITHUB_ENV
+  
       - name: Export unsigned .app bundle
         run: |
           mkdir Result
-          cp -R "build/Release-iphoneos/YoutubeDL.app" "./Result/YoutubeDL.app"
-          cd ..
+          cp -R "$TARGET_BUILD_DIR/YoutubeDL.app" "./Result/YoutubeDL.app"
   
       - name: Archive and upload .app file
         uses: actions/upload-artifact@v4
