@@ -15,7 +15,7 @@ jobs:
       - name: Build iOS
         run: |
           xcodebuild build \
-            -workspace "YoutubeDL.xcworkspace" \
+            -project "YoutubeDL.xcodeproj" \
             -scheme "YoutubeDL" \
             -sdk iphoneos \
             -destination 'platform=iOS,OS=17.0' \
